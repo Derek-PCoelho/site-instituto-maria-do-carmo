@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Lógica para alternar entre formulários PF e PJ
+    // Lógica para alternar abas
     const tabLinks = document.querySelectorAll('.tab-link');
     const beneficiaryForms = document.querySelectorAll('.beneficiary-form');
-
     if (tabLinks.length > 0) {
         tabLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -11,30 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 link.classList.add('active');
                 beneficiaryForms.forEach(form => {
                     form.style.display = form.id === `beneficiary-form-${formId}` ? 'block' : 'none';
-                    if (form.id === `beneficiary-form-${formId}`) {
-                        form.classList.add('active');
-                    } else {
-                        form.classList.remove('active');
-                    }
                 });
             });
         });
     }
 
-    // Lógica para adicionar membros da família dinamicamente
-    const addFamiliarBtn = document.getElementById('add-familiar-btn');
-    if (addFamiliarBtn) {
-        addFamiliarBtn.addEventListener('click', () => {
-            const wrapper = document.getElementById('composicao-familiar-wrapper');
-            const familiarItem = wrapper.querySelector('.familiar-item').cloneNode(true);
-            familiarItem.querySelectorAll('input, select').forEach(input => {
-                input.value = '';
-            });
-            wrapper.appendChild(familiarItem);
-        });
-    }
-    
-    // Função para mostrar feedback visual no formulário
+    // Função para mostrar feedback
     const showFeedback = (form, message, type) => {
         let feedbackEl = form.querySelector('.feedback');
         if (!feedbackEl) {
@@ -45,43 +26,53 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackEl.textContent = message;
     };
 
-    // Função para validar um formulário
-    const validateForm = (form) => {
-        let isValid = true;
-        form.querySelectorAll('[required]').forEach(input => {
-            let hasError = (input.type === 'checkbox') ? !input.checked : !input.value.trim();
-            if (hasError) {
-                isValid = false;
-                input.style.borderColor = 'red';
-            } else {
-                input.style.borderColor = '';
-            }
-        });
-        return isValid;
-    };
-    
-    // Função para lidar com o envio de formulário (apenas validação e feedback)
-    const handleFormSubmit = (event) => {
-        event.preventDefault(); 
+    // Função principal de envio (VERSÃO DETETIVE)
+    const handleFormSubmit = async (event, formType) => {
+        event.preventDefault();
         const form = event.target;
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        
+        console.clear(); // Limpa o console para um novo teste
+        showFeedback(form, "Iniciando envio... Verifique o console (F12).", "loading");
+        console.log("Iniciando envio do formulário...");
 
-        if (validateForm(form)) {
-            showFeedback(form, 'Formulário enviado com sucesso para demonstração!', 'success');
-            console.log("Dados capturados:", Object.fromEntries(new FormData(form)));
-            form.reset();
+        const payload = { dataEnvio: new Date().toLocaleString('pt-BR'), nome: "Teste" }; // Dados de teste simples
+        const sheetName = `beneficiarios_${formType}`;
+
+        try {
+            const endpoint = '/.netlify/functions/submit-form';
+            console.log(`Tentando fazer 'fetch' para o endpoint: ${endpoint}`);
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sheetName, payload }),
+            });
+
+            console.log("--- RESPOSTA DO SERVIDOR RECEBIDA ---");
+            console.log(`Status da Resposta: ${response.status} ${response.statusText}`);
+            console.log(`Resposta OK? (response.ok): ${response.ok}`);
             
-            if (form.id === 'beneficiary-form-pf') {
-                const wrapper = document.getElementById('composicao-familiar-wrapper');
-                while(wrapper.children.length > 1) {
-                    wrapper.removeChild(wrapper.lastChild);
-                }
+            const responseBody = await response.text();
+            console.log("Corpo da Resposta (o que o servidor enviou de volta):");
+            console.log(responseBody);
+
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
             }
-        } else {
-            showFeedback(form, 'Por favor, preencha todos os campos obrigatórios (*).', 'error');
+
+            showFeedback(form, 'Sucesso! Resposta recebida do servidor. Verifique a planilha.', 'success');
+
+        } catch (error) {
+            console.error("--- ERRO DETALHADO NO ENVIO ---", error);
+            showFeedback(form, `Falha na conexão. Veja o console (F12) para detalhes. Erro: ${error.message}`, 'error');
+        } finally {
+            submitButton.disabled = false;
         }
     };
 
-    // Adiciona o listener para ambos os formulários
-    document.getElementById('beneficiary-form-pf')?.addEventListener('submit', handleFormSubmit);
-    document.getElementById('beneficiary-form-pj')?.addEventListener('submit', handleFormSubmit);
+    // Adiciona os listeners
+    document.getElementById('beneficiary-form-pf')?.addEventListener('submit', (e) => handleFormSubmit(e, 'pf'));
+    document.getElementById('beneficiary-form-pj')?.addEventListener('submit', (e) => handleFormSubmit(e, 'pj'));
 });
