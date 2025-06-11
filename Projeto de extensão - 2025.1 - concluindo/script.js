@@ -61,7 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateForm = (form) => {
         let isValid = true;
         form.querySelectorAll('[required]').forEach(input => {
-            let hasError = (input.type === 'checkbox') ? !input.checked : !input.veclue.trim();
+            // CORREÇÃO DO ERRO DE DIGITAÇÃO AQUI
+            let hasError = (input.type === 'checkbox') ? !input.checked : !input.value.trim();
             if (hasError) {
                 isValid = false;
                 input.style.borderColor = 'red';
@@ -72,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     };
     
-    // Função para lidar com o envio de formulário (apenas validação e feedback)
+    // Função para lidar com o envio de formulário
     const handleFormSubmit = (event) => {
         event.preventDefault(); 
         const form = event.target;
