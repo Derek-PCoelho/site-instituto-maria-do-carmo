@@ -12,96 +12,48 @@
     --border-color: #ddd;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    font-family: 'Open Sans', sans-serif;
-    line-height: 1.6;
-    color: var(--text-dark);
-    background-color: var(--background-light);
-}
+body { font-family: 'Open Sans', sans-serif; line-height: 1.6; color: var(--text-dark); background-color: var(--background-light); }
+h1, h2, h3 { font-family: 'Montserrat', sans-serif; color: var(--primary-color); margin-bottom: 1rem; }
+a { color: var(--primary-color); text-decoration: none; }
+a:hover { color: var(--secondary-color); }
 
 /* Header e Navegação */
-header {
-    background-color: var(--white);
-    padding: 0.5rem 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
+header { background-color: var(--white); padding: 0.5rem 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.logo img { height: 5rem; }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
+/* Estilos de Desktop para os links (CORRIGIDO) */
+.nav-links ul { list-style: none; display: flex; margin: 0; padding: 0; }
+.nav-links ul li { margin-left: 2rem; }
+.nav-links ul li a { font-weight: 600; color: var(--text-dark); padding: 0.5rem 0; }
+.nav-toggle { display: none; } /* Botão hambúrguer escondido por padrão */
 
-.logo img {
-    height: 5rem;
-}
-
-/* Estilos de Desktop para os links */
-.nav-links ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links ul li {
-    margin-left: 2rem;
-}
-
-.nav-links ul li a {
-    font-weight: 600;
-    color: var(--text-dark);
-    padding: 0.5rem 0;
-}
-
-/* Botão hambúrguer escondido no desktop */
-.nav-toggle {
-    display: none;
-}
-
-
-/* =================================================================== */
-/* ==== ESTILOS GERAIS E DE FORMULÁRIO (sem alterações) =========== */
-/* =================================================================== */
-section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; text-align: center; }
-h2 { font-size: 2.5rem; margin-bottom: 2rem; }
-.btn-submit-beneficiary { display: inline-block; background-color: var(--secondary-color); color: var(--white); padding: 0.8rem 1.8rem; border-radius: 50px; font-weight: 700; text-transform: uppercase; border: none; cursor: pointer; }
+/* Estilos de Seções, Cards, Formulários, etc. (Seu código original) */
+section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+h1, h2, p.subtitle { text-align: center; }
+.cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
+.card { background-color: var(--white); padding: 2rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); text-align: center; }
+.beneficiary-form { display: none; background-color: var(--background-light); padding: 2.5rem; border-radius: 10px; max-width: 900px; margin: 2rem auto; text-align: left; }
+.beneficiary-form.active { display: block; }
 .form-tab-switcher { display: flex; justify-content: center; margin-bottom: 2rem; border-bottom: 2px solid var(--border-color); }
 .tab-link { padding: 0.8rem 1.5rem; cursor: pointer; border: none; background-color: transparent; font-size: 1.2rem; font-weight: 600; color: var(--text-light); }
 .tab-link.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); }
-.beneficiary-form { display: none; background-color: var(--background-light); padding: 2.5rem; border-radius: 10px; max-width: 900px; margin: 2rem auto; text-align: left; }
-.beneficiary-form.active { display: block; }
-.form-section-title { font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--background-grey); }
+.form-section-title { font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; }
 .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
 .form-group.full-width { grid-column: 1 / -1; }
 .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
 .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 5px; font-size: 1rem; }
-.checkbox-label { display: flex; align-items: center; gap: 0.8rem; }
-.form-info-text { background-color: #e9ecef; padding: 1rem; border-radius: 5px; }
 .feedback { padding: 1rem; margin-bottom: 1.5rem; border-radius: 5px; font-weight: 600; text-align: center; }
 .feedback.success { background-color: #d4edda; color: #155724; }
 .feedback.error { background-color: #f8d7da; color: #721c24; }
 footer { background-color: var(--text-dark); color: var(--white); padding: 2rem 1rem; text-align: center; }
 footer a { color: var(--white); }
+.btn-submit-beneficiary, .btn-doar { display: inline-block; background-color: var(--secondary-color); color: var(--white); padding: 0.8rem 1.8rem; border-radius: 50px; font-weight: 700; text-transform: uppercase; border: none; cursor: pointer; text-decoration: none; }
 
-
-/* =================================================================== */
-/* ==== ESTILOS PARA MENU HAMBÚRGUER (APENAS MOBILE) ============= */
-/* =================================================================== */
+/* ESTILOS DO MENU HAMBÚRGUER (APENAS PARA MOBILE) */
 @media (max-width: 768px) {
-    /* Mostra o botão hambúrguer */
     .nav-toggle {
         display: block;
         background: transparent;
@@ -109,40 +61,18 @@ footer a { color: var(--white); }
         cursor: pointer;
         z-index: 1001;
     }
-
-    .hamburger {
-        display: block;
-        position: relative;
-        width: 25px;
-        height: 3px;
-        background: var(--text-dark);
-        transition: all 0.2s ease-in-out;
-    }
-
-    .hamburger::before,
-    .hamburger::after {
-        content: '';
-        position: absolute;
-        width: 25px;
-        height: 3px;
-        background: var(--text-dark);
-        transition: all 0.2s ease-in-out;
-        left: 0;
-    }
-
+    .hamburger { display: block; position: relative; width: 25px; height: 3px; background: var(--text-dark); transition: all 0.2s ease-in-out; }
+    .hamburger::before, .hamburger::after { content: ''; position: absolute; width: 25px; height: 3px; background: var(--text-dark); transition: all 0.2s ease-in-out; left: 0; }
     .hamburger::before { top: -8px; }
     .hamburger::after { bottom: -8px; }
-
-    /* Animação do ícone para "X" */
     header.nav-open .hamburger { background: transparent; }
     header.nav-open .hamburger::before { transform: rotate(45deg) translate(5px, 6px); }
     header.nav-open .hamburger::after { transform: rotate(-45deg) translate(5px, -6px); }
 
-    /* Esconde o menu de desktop e prepara o painel lateral */
     .nav-links {
         position: fixed;
         top: 0;
-        right: -100%; /* Começa escondido */
+        right: -100%;
         width: 70%;
         max-width: 300px;
         height: 100vh;
@@ -154,24 +84,15 @@ footer a { color: var(--white); }
         transition: right 0.3s ease-in-out;
         box-shadow: -2px 0 10px rgba(0,0,0,0.1);
     }
-
-    /* Mostra o menu quando a classe .nav-open é adicionada */
     header.nav-open .nav-links {
         right: 0;
     }
-
-    /* Organiza a lista de links na vertical */
     .nav-links ul {
         flex-direction: column;
-        align-items: center;
-        gap: 1rem;
     }
-
     .nav-links ul li {
         margin: 1.5rem 0;
     }
-    
-    /* Outras regras de responsividade que você já tinha */
     nav {
         flex-direction: row;
     }
