@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .filter(item => item !== null);
 
         return {
-            dataEnvio: new Date().toLocaleString('pt-BR'),
+            dataEnvio: new Date().toLocaleString('pt-BR', { timeZone: 'America/Fortaleza' }),
             nome: form['pf-name'].value,
             sexo: form['pf-sexo'].value,
             dataNascimento: form['pf-dob'].value,
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Coleta dados do formulário PJ com os nomes corretos
     const gatherPjData = (form) => {
         return {
-            dataEnvio: new Date().toLocaleString('pt-BR'),
+            dataEnvio: new Date().toLocaleString('pt-BR', { timeZone: 'America/Fortaleza' }),
             razaoSocial: form['pj-razao-social'].value,
             nomeFantasia: form['pj-nome-fantasia'].value,
             cnpj: form['pj-cnpj'].value,
