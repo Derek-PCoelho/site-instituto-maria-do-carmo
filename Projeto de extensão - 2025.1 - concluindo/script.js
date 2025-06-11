@@ -1,16 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- LÓGICA DO MENU MOBILE ---
-    const navToggle = document.querySelector('.nav-toggle');
-    const header = document.querySelector('header');
-
-    if (navToggle) {
-        navToggle.addEventListener('click', () => {
-            header.classList.toggle('nav-open');
-        });
-    }
-
-    // --- LÓGICA DO FORMULÁRIO DE CADASTRO ---
-    
     // Lógica para alternar entre formulários PF e PJ
     const tabLinks = document.querySelectorAll('.tab-link');
     const beneficiaryForms = document.querySelectorAll('.beneficiary-form');
@@ -61,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateForm = (form) => {
         let isValid = true;
         form.querySelectorAll('[required]').forEach(input => {
-            // CORREÇÃO DO ERRO DE DIGITAÇÃO AQUI
             let hasError = (input.type === 'checkbox') ? !input.checked : !input.value.trim();
             if (hasError) {
                 isValid = false;
@@ -73,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     };
     
-    // Função para lidar com o envio de formulário
+    // Função para lidar com o envio de formulário (apenas validação e feedback)
     const handleFormSubmit = (event) => {
         event.preventDefault(); 
         const form = event.target;
