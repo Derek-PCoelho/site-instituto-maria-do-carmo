@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Lógica para alternar entre formulários PF e PJ (sem alterações)
+    // Lógica para alternar entre formulários PF e PJ
     const tabLinks = document.querySelectorAll('.tab-link');
     const beneficiaryForms = document.querySelectorAll('.beneficiary-form');
 
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Lógica para adicionar membros da família (sem alterações)
+    // Lógica para adicionar membros da família
     const addFamiliarBtn = document.getElementById('add-familiar-btn');
     if (addFamiliarBtn) {
         addFamiliarBtn.addEventListener('click', () => {
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     };
     
-    // ATUALIZAÇÃO PRINCIPAL: Função para lidar com o envio de formulário
+    // Função para lidar com o envio de formulário (VERSÃO CORRIGIDA)
     const handleFormSubmit = async (event, formType) => {
         event.preventDefault();
         const form = event.target;
@@ -70,9 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.textContent = 'Enviando...';
         showFeedback(form, 'Aguarde, enviando seu cadastro...', 'loading');
 
-        // Coleta os dados do formulário
+        // MÉTODO CORRIGIDO PARA COLETAR TODOS OS DADOS
         const formData = new FormData(form);
-        let payload = Object.fromEntries(formData.entries());
+        const payload = Object.fromEntries(formData.entries());
         payload.dataEnvio = new Date().toLocaleString('pt-BR');
 
         // Estrutura os dados da composição familiar para o formulário PF
@@ -82,14 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     const nome = item.querySelector('[name="familiar-nome[]"]').value;
                     const parentesco = item.querySelector('[name="familiar-parentesco[]"]').value;
                     const idade = item.querySelector('[name="familiar-idade[]"]').value;
+                    if (!nome) return null; // Ignora linhas de familiares vazias
                     return `Nome: ${nome}, Parentesco: ${parentesco}, Idade: ${idade}`;
                 })
-                .filter(item => item.includes('Nome: ') && item.split(' ')[1] !== ','); // Filtra itens vazios
-            payload.composicaoFamiliar = familiares.join('; ');
+                .filter(item => item !== null) // Remove as linhas vazias
+                .join('; '); // Separa múltiplos familiares com ponto e vírgula
+            payload.composicaoFamiliar = familiares;
         }
         
         try {
-            // Envia os dados para o backend (Netlify Function)
             const response = await fetch('/.netlify/functions/submit-form', {
                 method: 'POST',
                 body: JSON.stringify({ 
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('O servidor respondeu com um erro.');
             }
 
-            showFeedback(form, 'Cadastro enviado com sucesso! Agradecemos sua colaboração.', 'success');
+            showFeedback(form, 'Cadastro enviado com sucesso! Seus dados foram salvos.', 'success');
             form.reset();
             if (formType === 'pf') {
                 const wrapper = document.getElementById('composicao-familiar-wrapper');
@@ -110,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     wrapper.removeChild(wrapper.lastChild);
                 }
             }
-
         } catch (error) {
             console.error('Erro no envio:', error);
             showFeedback(form, 'Ocorreu um erro ao enviar o cadastro. Tente novamente mais tarde.', 'error');
