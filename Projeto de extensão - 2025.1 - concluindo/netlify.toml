@@ -1,4 +1,11 @@
 [build]
+  # Define a pasta base do seu projeto. O Netlify vai "entrar" nesta pasta antes de fazer qualquer coisa.
+  base = "Projeto de extensão - 2025.1 - concluindo"
+
+  # Define a pasta que será publicada. O "." significa "esta mesma pasta".
+  publish = "." 
+
+  # Define onde estão suas funções de backend.
   functions = "functions"
 
 [functions]
