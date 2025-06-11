@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 link.classList.add('active');
                 beneficiaryForms.forEach(form => {
                     form.style.display = form.id === `beneficiary-form-${formId}` ? 'block' : 'none';
-                    if (form.id === `beneficiary-form-${formId}`) form.classList.add('active');
-                    else form.classList.remove('active');
                 });
             });
         });
@@ -55,7 +53,76 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     };
     
-    // Função para lidar com o envio de formulário
+    // Coleta dados do formulário PF com os nomes corretos para a planilha
+    const gatherPfData = (form) => {
+        const familiares = Array.from(document.querySelectorAll('#composicao-familiar-wrapper .familiar-item'))
+            .map(item => {
+                const nome = item.querySelector('[name="familiar-nome[]"]').value;
+                if (!nome) return null;
+                return {
+                    nome,
+                    parentesco: item.querySelector('[name="familiar-parentesco[]"]').value,
+                    idade: item.querySelector('[name="familiar-idade[]"]').value,
+                    deficiencia: item.querySelector('[name="familiar-deficiencia[]"]').value,
+                    renda: item.querySelector('[name="familiar-renda[]"]').value
+                };
+            })
+            .filter(item => item !== null);
+
+        // Mapeia os nomes do formulário para os nomes das colunas da planilha
+        return {
+            dataEnvio: new Date().toLocaleString('pt-BR'),
+            nome: form['pf-name'].value,
+            sexo: form['pf-sexo'].value,
+            dataNascimento: form['pf-dob'].value,
+            cpf: form['pf-cpf'].value,
+            rg: form['pf-rg'].value,
+            orgaoExpedidor: form['pf-orgao'].value,
+            nis: form['pf-nis'].value,
+            escolaridade: form['pf-escolaridade'].value,
+            nomeMae: form['pf-mae'].value,
+            nomePai: form['pf-pai'].value,
+            celular: form['pf-celular'].value,
+            telefoneFixo: form['pf-fixo'].value,
+            profissao: form['pf-profissao'].value,
+            nacionalidade: form['pf-nacionalidade'].value,
+            rendaFamiliar: form['pf-renda'].value,
+            estadoCivil: form['pf-civil'].value,
+            outroMovel: form['pf-outro-movel'].value,
+            cep: form['imovel-cep'].value,
+            rua: form['imovel-rua'].value,
+            bairro: form['imovel-bairro'].value,
+            numero: form['imovel-numero'].value,
+            quadra: form['imovel-quadra'].value,
+            lote: form['imovel-lote'].value,
+            matricula: form['imovel-matricula'].value,
+            tempoMoradiaAnos: form['imovel-tempo'].value,
+            valorVenal: form['imovel-valor'].value,
+            tipologia: form['imovel-tipologia'].value,
+            areaM2: form['imovel-area'].value,
+            observacao: form['imovel-obs'].value,
+            memorialDescritivo: form['imovel-memorial'].value,
+            composicaoFamiliar: JSON.stringify(familiares, null, 2),
+            nomePreenchedor: form['reporter-name'].value,
+            cpfPreenchedor: form['reporter-cpf'].value
+        };
+    };
+
+    // Coleta dados do formulário PJ com os nomes corretos
+    const gatherPjData = (form) => {
+        return {
+            dataEnvio: new Date().toLocaleString('pt-BR'),
+            razaoSocial: form['pj-razao-social'].value,
+            nomeFantasia: form['pj-nome-fantasia'].value,
+            cnpj: form['pj-cnpj'].value,
+            enderecoSede: form['pj-address'].value,
+            telefoneComercial: form['pj-phone'].value,
+            nomeResponsavel: form['pj-responsavel'].value,
+            motivoCadastro: form['pj-reason'].value,
+        };
+    };
+
+    // Função principal para lidar com o envio de formulário
     const handleFormSubmit = async (event, formType) => {
         event.preventDefault();
         const form = event.target;
@@ -69,44 +136,12 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.disabled = true;
         submitButton.textContent = 'Enviando...';
         showFeedback(form, 'Aguarde, enviando seu cadastro...', 'loading');
-
-        const formData = new FormData(form);
-        const payload = Object.fromEntries(formData.entries());
-        payload.dataEnvio = new Date().toLocaleString('pt-BR');
-
-        // LÓGICA CORRIGIDA PARA "COMPOSIÇÃO FAMILIAR"
-        if (formType === 'pf') {
-            const familiares = Array.from(document.querySelectorAll('#composicao-familiar-wrapper .familiar-item'))
-                .map(item => {
-                    const nome = item.querySelector('[name="familiar-nome[]"]').value;
-                    if (!nome) return null; // Ignora linhas de familiares vazias
-                    
-                    // Cria um objeto para cada familiar
-                    return {
-                        nome: nome,
-                        parentesco: item.querySelector('[name="familiar-parentesco[]"]').value,
-                        idade: item.querySelector('[name="familiar-idade[]"]').value,
-                        deficiencia: item.querySelector('[name="familiar-deficiencia[]"]').value,
-                        renda: item.querySelector('[name="familiar-renda[]"]').value
-                    };
-                })
-                .filter(item => item !== null); // Remove as linhas vazias da lista
-
-            // Converte a lista de objetos em um texto JSON formatado
-            payload.composicaoFamiliar = JSON.stringify(familiares, null, 2);
-
-            // Remove os campos individuais que já foram agrupados no JSON
-            delete payload['familiar-nome[]'];
-            delete payload['familiar-parentesco[]'];
-            delete payload['familiar-idade[]'];
-            delete payload['familiar-deficiencia[]'];
-            delete payload['familiar-renda[]'];
-        }
+        
+        const payload = (formType === 'pf') ? gatherPfData(form) : gatherPjData(form);
         
         try {
             const response = await fetch('/.netlify/functions/submit-form', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
                     sheetName: `beneficiarios_${formType}`,
                     payload: payload 
