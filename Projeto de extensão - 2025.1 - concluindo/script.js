@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- LÓGICA DO MENU MOBILE (ADICIONADA) ---
+    const navToggle = document.querySelector('.nav-toggle');
+    const header = document.querySelector('header');
+
+    if (navToggle && header) {
+        navToggle.addEventListener('click', () => {
+            // Adiciona ou remove a classe 'nav-open' no header
+            // O CSS cuida de mostrar ou esconder o menu
+            header.classList.toggle('nav-open');
+        });
+    }
+
+    // --- LÓGICA DO FORMULÁRIO DE CADASTRO (EXISTENTE E FUNCIONAL) ---
+    
     // Lógica para alternar entre formulários PF e PJ
     const tabLinks = document.querySelectorAll('.tab-link');
     const beneficiaryForms = document.querySelectorAll('.beneficiary-form');
@@ -53,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     };
     
-    // Coleta dados do formulário PF com os nomes corretos para a planilha
+    // Coleta dados do formulário PF
     const gatherPfData = (form) => {
         const familiares = Array.from(document.querySelectorAll('#composicao-familiar-wrapper .familiar-item'))
             .map(item => {
@@ -69,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .filter(item => item !== null);
 
-        // Mapeia os nomes do formulário para os nomes das colunas da planilha
         return {
             dataEnvio: new Date().toLocaleString('pt-BR', { timeZone: 'America/Fortaleza' }),
             nome: form['pf-name'].value,
@@ -150,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                throw new Error('O servidor respondeu com um erro. Verifique os logs da função no Netlify.');
+                throw new Error('O servidor respondeu com um erro.');
             }
 
             showFeedback(form, 'Cadastro enviado com sucesso! Seus dados foram salvos.', 'success');
