@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     };
     
-    // Função para lidar com o envio de formulário (VERSÃO CORRIGIDA)
+    // Função para lidar com o envio de formulário
     const handleFormSubmit = async (event, formType) => {
         event.preventDefault();
         const form = event.target;
@@ -70,29 +70,43 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.textContent = 'Enviando...';
         showFeedback(form, 'Aguarde, enviando seu cadastro...', 'loading');
 
-        // MÉTODO CORRIGIDO PARA COLETAR TODOS OS DADOS
         const formData = new FormData(form);
         const payload = Object.fromEntries(formData.entries());
         payload.dataEnvio = new Date().toLocaleString('pt-BR');
 
-        // Estrutura os dados da composição familiar para o formulário PF
+        // LÓGICA CORRIGIDA PARA "COMPOSIÇÃO FAMILIAR"
         if (formType === 'pf') {
             const familiares = Array.from(document.querySelectorAll('#composicao-familiar-wrapper .familiar-item'))
                 .map(item => {
                     const nome = item.querySelector('[name="familiar-nome[]"]').value;
-                    const parentesco = item.querySelector('[name="familiar-parentesco[]"]').value;
-                    const idade = item.querySelector('[name="familiar-idade[]"]').value;
                     if (!nome) return null; // Ignora linhas de familiares vazias
-                    return `Nome: ${nome}, Parentesco: ${parentesco}, Idade: ${idade}`;
+                    
+                    // Cria um objeto para cada familiar
+                    return {
+                        nome: nome,
+                        parentesco: item.querySelector('[name="familiar-parentesco[]"]').value,
+                        idade: item.querySelector('[name="familiar-idade[]"]').value,
+                        deficiencia: item.querySelector('[name="familiar-deficiencia[]"]').value,
+                        renda: item.querySelector('[name="familiar-renda[]"]').value
+                    };
                 })
-                .filter(item => item !== null) // Remove as linhas vazias
-                .join('; '); // Separa múltiplos familiares com ponto e vírgula
-            payload.composicaoFamiliar = familiares;
+                .filter(item => item !== null); // Remove as linhas vazias da lista
+
+            // Converte a lista de objetos em um texto JSON formatado
+            payload.composicaoFamiliar = JSON.stringify(familiares, null, 2);
+
+            // Remove os campos individuais que já foram agrupados no JSON
+            delete payload['familiar-nome[]'];
+            delete payload['familiar-parentesco[]'];
+            delete payload['familiar-idade[]'];
+            delete payload['familiar-deficiencia[]'];
+            delete payload['familiar-renda[]'];
         }
         
         try {
             const response = await fetch('/.netlify/functions/submit-form', {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
                     sheetName: `beneficiarios_${formType}`,
                     payload: payload 
