@@ -1,0 +1,8 @@
+{
+  "name": "instituto-maria-do-carmo-backend",
+  "version": "1.0.0",
+  "description": "Backend para o formulário do instituto",
+  "dependencies": {
+    "google-spreadsheet": "^3.3.0"
+  }
+}

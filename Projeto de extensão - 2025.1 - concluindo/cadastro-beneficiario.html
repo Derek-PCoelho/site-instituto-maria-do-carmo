@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Beneficiário - Instituto Maria do Carmo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html"><img src="assets/logo_instituto_maria_do_carmo.png" alt="Logo Instituto Maria do Carmo"></a>
+            </div>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="quem-somos.html">Quem Somos</a></li>
+                <li><a href="o-que-fazemos.html">O Que Fazemos</a></li>
+                <li><a href="cadastro-beneficiario.html">Cadastre seu Beneficiário</a></li>
+                <li><a href="contato.html">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="beneficiarios">
+            <h2>Cadastre seu Beneficiário</h2>
+            <p class="subtitle">Se você conhece uma família, indivíduo ou entidade no Bom Jardim que precisa de apoio, preencha o formulário abaixo.</p>
+            
+            <div class="form-tab-switcher">
+                <button class="tab-link active" data-form="pf">Pessoa Física</button>
+                <button class="tab-link" data-form="pj">Pessoa Jurídica</button>
+            </div>
+            
+            <form id="beneficiary-form-pf" class="beneficiary-form active" novalidate>
+                <h3 class="form-section-title">Dados Pessoais</h3>
+                <div class="form-grid">
+                    <div class="form-group full-width"><label for="pf-name">Nome: *</label><input type="text" id="pf-name" name="pf-name" required></div>
+                    <div class="form-group"><label for="pf-sexo">Sexo: *</label><select id="pf-sexo" name="pf-sexo" required><option value="" disabled selected>Escolha</option><option value="masculino">Masculino</option><option value="feminino">Feminino</option><option value="outro">Outro</option><option value="nao-informar">Prefiro não informar</option></select></div>
+                    <div class="form-group"><label for="pf-dob">Data de Nascimento: *</label><input type="date" id="pf-dob" name="pf-dob" required></div>
+                    <div class="form-group"><label for="pf-cpf">CPF: *</label><input type="text" id="pf-cpf" name="pf-cpf" required></div>
+                    <div class="form-group"><label for="pf-rg">RG: *</label><input type="text" id="pf-rg" name="pf-rg" required></div>
+                    <div class="form-group"><label for="pf-orgao">Orgão Expedidor: *</label><input type="text" id="pf-orgao" name="pf-orgao" required></div>
+                    <div class="form-group"><label for="pf-nis">NIS:</label><input type="text" id="pf-nis" name="pf-nis"></div>
+                    <div class="form-group"><label for="pf-escolaridade">Escolaridade:</label><select id="pf-escolaridade" name="pf-escolaridade"><option value="" disabled selected>Escolha</option><option value="analfabeto">Analfabeto</option><option value="fundamental-incompleto">Fundamental Incompleto</option><option value="fundamental-completo">Fundamental Completo</option><option value="medio-incompleto">Médio Incompleto</option><option value="medio-completo">Médio Completo</option><option value="superior-incompleto">Superior Incompleto</option><option value="superior-completo">Superior Completo</option></select></div>
+                    <div class="form-group"><label for="pf-mae">Nome da mãe: *</label><input type="text" id="pf-mae" name="pf-mae" required></div>
+                    <div class="form-group"><label for="pf-pai">Nome do pai:</label><input type="text" id="pf-pai" name="pf-pai"></div>
+                    <div class="form-group"><label for="pf-celular">Celular: *</label><input type="tel" id="pf-celular" name="pf-celular" placeholder="(DDD) XXXXX-XXXX" required></div>
+                    <div class="form-group"><label for="pf-fixo">Telefone fixo:</label><input type="tel" id="pf-fixo" name="pf-fixo" placeholder="(DDD) XXXX-XXXX"></div>
+                    <div class="form-group"><label for="pf-profissao">Profissão: *</label><input type="text" id="pf-profissao" name="pf-profissao" required></div>
+                    <div class="form-group"><label for="pf-nacionalidade">Nacionalidade:</label><input type="text" id="pf-nacionalidade" name="pf-nacionalidade"></div>
+                    <div class="form-group"><label for="pf-renda">Renda Mensal Familiar: *</label><select id="pf-renda" name="pf-renda" required><option value="" disabled selected>Escolha</option><option value="ate-1-sm">Até 1 salário mínimo</option><option value="1-a-2-sm">De 1 a 2 salários mínimos</option><option value="2-a-3-sm">De 2 a 3 salários mínimos</option><option value="mais-3-sm">Acima de 3 salários mínimos</option></select></div>
+                    <div class="form-group"><label for="pf-civil">Estado civil:</label><select id="pf-civil" name="pf-civil"><option value="" disabled selected>Escolha</option><option value="solteiro">Solteiro(a)</option><option value="casado">Casado(a)</option><option value="divorciado">Divorciado(a)</option><option value="viuvo">Viuvo(a)</option><option value="uniao-estavel">União Estável</option></select></div>
+                    <div class="form-group full-width"><label for="pf-outro-movel">Outro móvel registrado em nome da pessoa/casal:</label><input type="text" id="pf-outro-movel" name="pf-outro-movel"></div>
+                </div>
+
+                <h3 class="form-section-title">Dados do Imóvel</h3>
+                <div class="form-grid">
+                    <div class="form-group"><label for="imovel-cep">CEP: *</label><input type="text" id="imovel-cep" name="imovel-cep" required></div>
+                    <div class="form-group"><label for="imovel-rua">Rua:</label><input type="text" id="imovel-rua" name="imovel-rua"></div>
+                    <div class="form-group"><label for="imovel-bairro">Bairro:</label><input type="text" id="imovel-bairro" name="imovel-bairro"></div>
+                    <div class="form-group"><label for="imovel-numero">Número:</label><input type="text" id="imovel-numero" name="imovel-numero"></div>
+                    <div class="form-group"><label for="imovel-quadra">Quadra:</label><input type="text" id="imovel-quadra" name="imovel-quadra"></div>
+                    <div class="form-group"><label for="imovel-lote">Lote:</label><input type="text" id="imovel-lote" name="imovel-lote"></div>
+                    <div class="form-group"><label for="imovel-matricula">Matrícula:</label><input type="text" id="imovel-matricula" name="imovel-matricula"></div>
+                    <div class="form-group"><label for="imovel-tempo">Tempo de moradia (anos):</label><input type="number" id="imovel-tempo" name="imovel-tempo" min="0"></div>
+                    <div class="form-group"><label for="imovel-valor">Valor venal:</label><input type="text" id="imovel-valor" name="imovel-valor"></div>
+                    <div class="form-group"><label for="imovel-tipologia">Tipologia do imóvel:</label><select id="imovel-tipologia" name="imovel-tipologia"><option value="" disabled selected>Escolha</option><option value="proprio">Próprio</option><option value="alugado">Alugado</option><option value="cedido">Cedido</option><option value="financiado">Financiado</option></select></div>
+                    <div class="form-group"><label for="imovel-area">Área do imóvel em m²:</label><input type="number" id="imovel-area" name="imovel-area" min="0"></div>
+                    <div class="form-group full-width"><label for="imovel-obs">Observação:</label><textarea id="imovel-obs" name="imovel-obs" rows="3"></textarea></div>
+                    <div class="form-group full-width"><label for="imovel-memorial">Memorial Descritivo:</label><textarea id="imovel-memorial" name="imovel-memorial" rows="5" placeholder="Descreva brevemente a situação e a necessidade de apoio."></textarea></div>
+                    <div class="form-group full-width"><label>Envio de Documentos</label><p class="form-info-text">Após o envio deste formulário, por favor, encaminhe cópias dos documentos (RG, CPF, Comp. de Residência, etc.) para o e-mail: <strong>contato@institutomariadocarmo.com.br</strong></p></div>
+                </div>
+
+                <h3 class="form-section-title">Composição Familiar (Quem mora na casa)</h3>
+                <div id="composicao-familiar-wrapper">
+                    <div class="form-grid familiar-item">
+                        <div class="form-group"><label>Nome:</label><input type="text" name="familiar-nome[]"></div>
+                        <div class="form-group"><label>Parentesco:</label><input type="text" name="familiar-parentesco[]"></div>
+                        <div class="form-group"><label>Idade:</label><input type="number" name="familiar-idade[]" min="0"></div>
+                        <div class="form-group"><label>Deficiência:</label><input type="text" name="familiar-deficiencia[]"></div>
+                        <div class="form-group"><label>Renda: *</label><select name="familiar-renda[]" required><option value="0" selected>Sem Renda</option><option value="ate-1-sm">Até 1 salário mínimo</option><option value="1-a-2-sm">De 1 a 2 salários mínimos</option><option value="mais-2-sm">Acima de 2 salários mínimos</option></select></div>
+                    </div>
+                </div>
+                <button type="button" id="add-familiar-btn">Adicionar Membro</button>
+
+                <h3 class="form-section-title">Conclusão do Cadastro</h3>
+                <div class="form-grid">
+                    <div class="form-group"><label for="reporter-name">Nome de quem preencheu o cadastro:</label><input type="text" id="reporter-name" name="reporter-name"></div>
+                    <div class="form-group"><label for="reporter-cpf">CPF de quem preencheu o cadastro:</label><input type="text" id="reporter-cpf" name="reporter-cpf"></div>
+                    <div class="form-group full-width"><label for="declaracao" class="checkbox-label"><input type="checkbox" id="declaracao" name="declaracao" required><span>Declaro que as afirmações acima são verdadeiras podendo ser comprovadas a qualquer solicitação e que estou ciente das penalidades previstas no art. 299 do Código Penal, no art. 1° da lei Federal n° 8.137, de 27 de dezembro de 1990. *</span></label></div>
+                </div>
+                <button type="submit" class="btn-submit-beneficiary">Enviar Cadastro</button>
+            </form>
+
+            <form id="beneficiary-form-pj" class="beneficiary-form" style="display: none;" novalidate>
+                 <h3 class="form-section-title">Dados da Pessoa Jurídica</h3>
+                <div class="form-grid">
+                    <div class="form-group full-width"><label for="pj-razao-social">Razão Social: *</label><input type="text" id="pj-razao-social" name="pj-razao-social" required></div>
+                    <div class="form-group"><label for="pj-nome-fantasia">Nome Fantasia:</label><input type="text" id="pj-nome-fantasia" name="pj-nome-fantasia"></div>
+                    <div class="form-group"><label for="pj-cnpj">CNPJ: *</label><input type="text" id="pj-cnpj" name="pj-cnpj" required></div>
+                    <div class="form-group full-width"><label for="pj-address">Endereço da Sede (Rua, Número, Bairro): *</label><input type="text" id="pj-address" name="pj-address" required></div>
+                    <div class="form-group"><label for="pj-phone">Telefone Comercial: *</label><input type="tel" id="pj-phone" name="pj-phone" placeholder="(DDD) XXXX-XXXX" required></div>
+                    <div class="form-group"><label for="pj-responsavel">Nome do Responsável: *</label><input type="text" id="pj-responsavel" name="pj-responsavel" required></div>
+                    <div class="form-group full-width"><label for="pj-reason">Motivo do Cadastramento / Necessidade:</label><textarea id="pj-reason" name="pj-reason" rows="5" placeholder="Descreva brevemente a situação da entidade e a necessidade de apoio."></textarea></div>
+                    <div class="form-group full-width"><label>Envio de Documentos</label><p class="form-info-text">Após o envio deste formulário, por favor, encaminhe cópias dos documentos (Cartão CNPJ, Estatuto Social, etc.) para o e-mail: <strong>contato@institutomariadocarmo.com.br</strong></p></div>
+                </div>
+                <button type="submit" class="btn-submit-beneficiary">Enviar Cadastro</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Instituto Maria do Carmo. Todos os direitos reservados.</p>
+        <p><a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
