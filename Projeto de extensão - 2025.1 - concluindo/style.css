@@ -547,8 +547,9 @@ footer a:hover {
 }
 
 /* =================================================================== */
-/* ==== ESTILOS DO MENU HAMBÚRGUER (APENAS MOBILE) ============= */
+/* ==== ESTILOS DO MENU HAMBÚRGUER E RESPONSIVIDADE (CORRIGIDO) ==== */
 /* =================================================================== */
+
 @media (max-width: 768px) {
     /* Mostra o botão hambúrguer */
     .nav-toggle {
@@ -556,8 +557,9 @@ footer a:hover {
         background: transparent;
         border: none;
         cursor: pointer;
-        z-index: 1001;
+        z-index: 1002; /* Z-index alto para o botão ficar acima do menu */
     }
+
     .hamburger {
         display: block;
         position: relative;
@@ -566,6 +568,7 @@ footer a:hover {
         background: var(--text-dark);
         transition: all 0.2s ease-in-out;
     }
+
     .hamburger::before,
     .hamburger::after {
         content: '';
@@ -576,31 +579,46 @@ footer a:hover {
         transition: all 0.2s ease-in-out;
         left: 0;
     }
+
     .hamburger::before { top: -8px; }
     .hamburger::after { bottom: -8px; }
 
-    /* Esconde o menu de links do desktop */
-    nav .nav-links {
-        display: none;
-    }
-    
-    /* Quando o menu está aberto, o painel desliza para a tela */
-    header.nav-open .nav-links {
+    /* Animação do ícone para "X" */
+    header.nav-open .hamburger { background: transparent; }
+    header.nav-open .hamburger::before { transform: rotate(45deg) translate(5px, 6px); }
+    header.nav-open .hamburger::after { transform: rotate(-45deg) translate(5px, -6px); }
+
+    /* Painel do menu lateral (COM AS CORREÇÕES) */
+    .nav-links {
         position: fixed;
         top: 0;
-        right: 0;
+        right: -100%;
         width: 70%;
         max-width: 300px;
         height: 100vh;
-        background: var(--white);
+        background-color: var(--white); /* CORREÇÃO: Garante o fundo branco sólido */
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        transition: right 0.3s ease-in-out;
         box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        z-index: 1001; /* CORREÇÃO: Garante que o painel fique acima do conteúdo da página */
     }
     
+    /* Mostra o menu quando a classe .nav-open é adicionada */
+    header.nav-open .nav-links {
+        right: 0;
+    }
+    
+    /* Esconde o menu de desktop original no mobile */
+    nav > .nav-links > ul {
+        display: none;
+    }
+
+    /* Mostra os links dentro do painel aberto */
     header.nav-open .nav-links ul {
+        display: flex;
         flex-direction: column;
         align-items: center;
         gap: 1rem;
@@ -610,13 +628,9 @@ footer a:hover {
         margin: 1.5rem 0;
     }
 
-    /* Animação do ícone para "X" */
-    header.nav-open .hamburger { background: transparent; }
-    header.nav-open .hamburger::before { transform: rotate(45deg) translate(5px, 6px); }
-    header.nav-open .hamburger::after { transform: rotate(-45deg) translate(5px, -6px); }
-
     /* Outras regras responsivas */
     .form-grid {
         grid-template-columns: 1fr;
     }
 }
+
