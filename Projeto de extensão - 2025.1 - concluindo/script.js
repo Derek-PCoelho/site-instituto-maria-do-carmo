@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .filter(item => item !== null);
 
+        // Mapeia os nomes do formulário para os nomes das colunas da planilha
         return {
             dataEnvio: new Date().toLocaleString('pt-BR', { timeZone: 'America/Fortaleza' }),
             nome: form['pf-name'].value,
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    // Coleta dados do formulário PJ com os nomes corretos
+    // Coleta dados do formulário PJ
     const gatherPjData = (form) => {
         return {
             dataEnvio: new Date().toLocaleString('pt-BR', { timeZone: 'America/Fortaleza' }),
@@ -149,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                throw new Error('O servidor respondeu com um erro.');
+                throw new Error('O servidor respondeu com um erro. Verifique os logs da função no Netlify.');
             }
 
             showFeedback(form, 'Cadastro enviado com sucesso! Seus dados foram salvos.', 'success');
